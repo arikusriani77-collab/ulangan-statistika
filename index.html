@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ulangan Harian Statistika – SMAN 1 Ngamprah</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--tx:#1b2333;--mu:#5d6a85;--pr:#2457d6;--bd:#d9dfec;--rd:#c62828}
+@media(prefers-color-scheme:dark){:root{--bg:#10141f;--card:#1a2030;--tx:#e8ecf6;--mu:#9aa6c2;--pr:#6c93ff;--bd:#2c3550;--rd:#ff6b6b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,button{font:inherit}
+.wrap{max-width:720px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;margin-bottom:14px}
+h1{font-size:1.3rem;margin:0 0 4px}
+label{display:block;margin:12px 0 4px;font-weight:600}
+select,input[type=text],input[type=number]{width:100%;padding:11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);-webkit-user-select:text;user-select:text}
+button{background:var(--pr);color:#fff;border:0;border-radius:10px;padding:12px 18px;font-weight:600;cursor:pointer}
+button.sec{background:transparent;color:var(--pr);border:1px solid var(--pr)}
+.mu{color:var(--mu);font-size:.92rem}
+.bar{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--bd);padding:10px 16px;padding-top:calc(10px + env(safe-area-inset-top,0px));display:flex;justify-content:space-between;gap:8px;font-weight:600}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid var(--bd);border-radius:10px;margin:8px 0;cursor:pointer}
+.opt input{margin-top:5px}
+.tag{display:inline-block;font-size:.75rem;background:var(--bg);border:1px solid var(--bd);border-radius:20px;padding:1px 9px;margin-left:6px;color:var(--mu)}
+table{width:100%;border-collapse:collapse}td,th{border:1px solid var(--bd);padding:8px;text-align:left}th{font-size:.85rem;color:var(--mu)}td.c{text-align:center;width:64px}
+#ov{position:fixed;inset:0;background:rgba(10,14,25,.96);color:#fff;display:none;z-index:50;align-items:center;justify-content:center;text-align:center;padding:24px}
+#ov div{max-width:420px}#ov h2{color:#ff8a80}
+.note{margin-top:10px;padding:8px 12px;border-left:4px solid var(--pr);background:var(--bg);border-radius:6px;font-size:.95rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}.chip{width:38px;padding:7px 0;background:transparent;color:var(--tx);border:1px solid var(--bd);border-radius:8px}.chip.ok{background:var(--bd)}.chip.on{background:var(--pr);color:#fff;border-color:var(--pr)}
+.navb{display:flex;justify-content:space-between;gap:10px}
+.hero{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#fff;
+  background:linear-gradient(120deg,#16348f,#2457d6,#6a3fd1,#1c86d4,#16348f);background-size:400% 400%;animation:bg 18s ease infinite}
+@keyframes bg{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+#fl{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+#fl span{position:absolute;bottom:-60px;font-weight:700;color:rgba(255,255,255,.18);animation:naik linear infinite;font-family:Georgia,serif}
+@keyframes naik{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-115vh) rotate(300deg);opacity:0}}
+.hc{position:relative;z-index:2;width:100%;padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+.cover{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;text-align:center;padding:26px 20px;animation:muncul .9s ease both;box-shadow:0 18px 50px rgba(0,0,20,.35)}
+@keyframes muncul{from{opacity:0;transform:translateY(26px) scale(.97)}to{opacity:1;transform:none}}
+.cover .lbl{letter-spacing:.18em;font-size:.78rem;opacity:.85;animation:muncul .9s .15s ease both}
+.cover h1{font-size:1.7rem;line-height:1.25;margin:8px 0 6px;animation:muncul .9s .3s ease both}
+.cover .sub{font-size:1.02rem;animation:muncul .9s .45s ease both}
+.cover .guru{margin-top:2px;opacity:.92;font-size:.95rem;animation:muncul .9s .55s ease both}
+.gbr{display:block;width:100%;max-width:340px;height:auto;margin:14px auto 6px;overflow:visible}
+.gbr .bar{transform-box:fill-box;transform-origin:50% 100%;animation:tumbuh .7s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes tumbuh{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.gbr .kurva{stroke-dasharray:1;stroke-dashoffset:0;animation:gambar 1.8s ease-out 1.2s both}
+@keyframes gambar{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+.gbr .dot{transform-box:fill-box;transform-origin:center;animation:titik .45s cubic-bezier(.2,1.8,.4,1) both}
+@keyframes titik{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+.gbr .koin{transform-box:fill-box;transform-origin:center;animation:titik .6s cubic-bezier(.2,1.8,.4,1) 2.9s both,melayang 2.6s ease-in-out 3.5s infinite}
+@keyframes melayang{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.gbr .tx{opacity:0;animation:titik .6s ease 2s forwards}
+.info{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:14px 0;animation:muncul .9s .8s ease both}
+.info span{background:rgba(0,0,30,.25);border-radius:20px;padding:4px 12px;font-size:.85rem}
+.rules{text-align:left;background:rgba(0,0,30,.28);border-radius:14px;padding:12px 16px 12px 34px;margin:12px 0;font-size:.92rem;animation:muncul .9s .95s ease both}
+.rules li{margin:5px 0}.rules b{color:#ffe08a}
+.btn-mulai{background:#fff;color:#2457d6;font-size:1.1rem;padding:14px 38px;border-radius:40px;box-shadow:0 0 0 0 rgba(255,255,255,.7);animation:denyut 1.8s ease-in-out infinite,muncul .9s 1.1s ease both}
+@keyframes denyut{0%{box-shadow:0 0 0 0 rgba(255,255,255,.65)}70%{box-shadow:0 0 0 18px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+.btn-mulai:disabled{animation:none;opacity:.65;cursor:not-allowed;box-shadow:none}
+.lock{margin:10px 0;padding:9px 12px;border-radius:12px;background:rgba(255,90,90,.28);font-size:.93rem;display:none}
+.back{background:none;color:var(--pr);padding:0 0 6px;font-weight:600;border:0}
+@media(prefers-reduced-motion:reduce){.hero,#fl span,.cover,.cover *,.gbr *,.btn-mulai,.info,.rules{animation:none!important;opacity:1!important}}
+.err{color:var(--rd);font-size:.9rem;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="ov"><div><h2>⚠ Pelanggaran Terdeteksi</h2><p id="ovm"></p><button id="ovb">Kembali ke Ujian</button></div></div>
+
+<script>
+/* ================= PENGATURAN (ubah di sini) ================= */
+const CONFIG = {
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbzbnORhShyxCuFNvOONd5gTvAKha2XWZbhhcUaEZK18si2WgOEIkj5rxWQQORd2Uy73/exec",
+  JUDUL: "Ulangan Harian Statistika",
+  MAPEL: "Matematika Kelas XII",
+  SEKOLAH: "SMAN 1 Ngamprah",
+  GURU: "Ari Kusriani Iman, S.Pd.",
+  KESEMPATAN: 3,         // hanya tampilan; harus sama dengan MAKS_PERCOBAAN di Code.gs
+  DURASI_MENIT: 60,
+  MAKS_PELANGGARAN: 3,   // setelah ini, jawaban otomatis dikirim
+};
+
+/* ================= BANK SOAL (parameter berbeda tiap paket) ================= */
+const num = x => String(x).replace("-","−");
+const dc = (x,d=2) => num(String(+(+x).toFixed(d)).replace(".",","));   // desimal gaya Indonesia
+const rp = x => String(Math.round(x)).replace(/\B(?=(\d{3})+(?!\d))/g,".");
+const sum = a => a.reduce((s,x)=>s+x,0);
+const cap = s => s[0].toUpperCase()+s.slice(1);
+const tb = (h,rows) => `<div style="overflow-x:auto;margin:8px 0"><table><tr>${h.map(x=>`<th>${x}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(x=>`<td>${x}</td>`).join("")}</tr>`).join("")}</table></div>`;
+const tbh = rows => `<div style="overflow-x:auto;margin:8px 0"><table>${rows.map(r=>`<tr><th>${r[0]}</th>${r.slice(1).map(x=>`<td class="c">${x}</td>`).join("")}</tr>`).join("")}</table></div>`;
+
+/* Setiap siswa (dan tiap percobaan) mendapat angka berbeda: seluruh parameter diacak dari seed. */
+function buatSoal(seed){
+  const R=rng(seed),ri=(a,b)=>a+Math.floor(R()*(b-a+1)),pc=a=>a[Math.floor(R()*a.length)];
+  const pick=(a,n)=>shuf(a,R).slice(0,n);
+  const komp=(k,n,mn=1)=>{const f=Array(k).fill(mn);for(let i=0;i<n-k*mn;i++)f[Math.floor(R()*k)]++;return f}; // k frekuensi berjumlah n
+  const kls=(lo0,p,k)=>Array.from({length:k},(_,i)=>[lo0+i*p,lo0+i*p+p-1]);
+  const rowsK=(K,f)=>K.map((c,i)=>[`${c[0]} – ${c[1]}`,f[i]]);
+  const bol3=()=>{let f;do{f=[R()<.5,R()<.5,R()<.5].map(Number)}while(f[0]+f[1]+f[2]==0||f[0]+f[1]+f[2]==3);return f};
+  const bersih=r=>Math.abs(r*100-Math.round(r*100))<1e-7; // hasil maksimal 2 desimal
+  const NM=["Adisty","Dania","Raka","Salsa","Bima","Nadia","Radit","Ayu"];
+  const KO=[[1,2,3],[1,3],[2,4],[4],[1,2,3,4]];
+  const lb=c=>c.length==4?"Semua pernyataan benar":c.length==1?`Hanya pernyataan (${c[0]}) yang benar`:c.length==2?`Pernyataan (${c[0]}) dan (${c[1]}) benar`:`Pernyataan (${c.slice(0,-1).join("), (")}), dan (${c[c.length-1]}) benar`;
+  const kmb=(tag,intro,mk)=>{const bn=pc([0,1,2,3,4]),T=new Set(KO[bn]),st=mk(j=>T.has(j));
+    return {type:"pg",fix:1,tag,q:intro+"<br>"+st.map((x,j)=>`(${j+1}) ${x}`).join("<br>")+"<br>Pernyataan yang benar adalah …",
+      o:KO.map((c,j)=>({t:`${"ABCDE"[j]}. ${lb(c)}`,ok:j==bn?1:0}))}};
+  const S=[];
+  // 1. PG – diagram lingkaran: besar sudut juring
+  {const T=pc([720,1080,1440,1800]),sd=pc([36,45,60,72,90,108,120,135]),a=sd*T/360,pr=a/T*100;
+   S.push({type:"pg",tag:"Diagram Lingkaran",
+    q:`Sebuah UKM di Yogyakarta menghasilkan ${rp(a)} unit barang dari total produksi seluruh UKM sebanyak ${rp(T)} unit. Jika data tersebut disajikan dalam diagram lingkaran, besar sudut juring untuk UKM tersebut adalah …`,
+    o:pgo(sd,[pr,360-sd,sd/2,sd*2,sd+10],x=>dc(x)+"°",5)});}
+  // 2. PG – persentase pada data
+  {let p1,p2,p3,sm;do{p1=pc([10,15,20]);p2=pc([20,25,30]);p3=pc([25,30,35,40]);sm=p1+p2+p3}while(sm<60||sm>90);
+   const N=ri(4,10)*100,s=N*(100-sm)/100;
+   S.push({type:"pg",tag:"Persentase Data",
+    q:`Di sebuah perpustakaan terdapat buku matematika ${p1}%, buku bahasa Indonesia ${p2}%, buku bahasa Inggris ${p3}%, dan sisanya buku sejarah Indonesia. Jika banyak buku di perpustakaan tersebut ada ${N} buah, banyak buku sejarah adalah … buah.`,
+    o:pgo(s,[N*sm/100,N-N*(p1+p2)/100,N*(100-sm)/10,s+N/20,N*p3/100],rp,10)});}
+  // 3. Pilihan ganda kompleks – penyajian data (histogram, poligon, ogive, diagram)
+  {const Tr=["Diagram garis digunakan untuk menggambarkan keadaan yang berlangsung secara kontinu, misalnya perkembangan jumlah penjualan dari waktu ke waktu.",
+     "Pada diagram lingkaran, besar sudut juring = (frekuensi data ÷ jumlah seluruh data) × 360°.",
+     "Poligon frekuensi dibuat dengan menghubungkan titik-titik yang absisnya titik tengah kelas dan ordinatnya frekuensi kelas.",
+     "Ogive positif (kurang dari) dibuat dengan tepi atas kelas sebagai absis dan frekuensi kumulatif kurang dari sebagai ordinat.",
+     "Pada histogram, alas setiap persegi panjang menunjukkan panjang kelas dan tingginya menunjukkan frekuensi kelas."],
+    Fl=["Pada histogram, tinggi setiap persegi panjang menunjukkan panjang kelas.",
+     "Poligon frekuensi dibuat dengan menghubungkan tepi atas setiap kelas dengan frekuensinya.",
+     "Ogive negatif (lebih dari) dibuat dengan tepi atas kelas sebagai absis dan frekuensi kumulatif kurang dari sebagai ordinat.",
+     "Jumlah besar seluruh sudut juring pada diagram lingkaran adalah 180°.",
+     "Histogram adalah diagram garis yang khusus digunakan untuk menyajikan data tunggal."];
+   S.push({type:"pk",tag:"Pilihan Ganda Kompleks",
+    q:"Pilih <b>semua</b> pernyataan yang <b>benar</b> tentang penyajian data (jawaban lebih dari satu).",
+    o:[...pick(Tr,2).map(t=>({t,ok:1})),...pick(Fl,2).map(t=>({t,ok:0}))]});}
+  // 4. Benar / Salah – jangkauan, banyak kelas (Sturges), panjang kelas
+  {const [n,lg]=pc([[40,1.602],[50,1.699],[64,1.806],[80,1.903],[100,2]]),kk=Math.round(1+3.3*lg);
+   let J;do{J=ri(40,75)}while((J/kk)%1!==0&&(J/kk)%1<=.5);
+   const p=Math.ceil(J/kk),mn=ri(30,50),mx=mn+J,f=bol3();
+   S.push({type:"bs",tag:"Benar / Salah",
+    q:`Sekelompok data terdiri dari ${n} data dengan data terkecil ${mn} dan data terbesar ${mx}. Data akan disusun dalam tabel distribusi frekuensi dengan banyak kelas menurut aturan Sturges, k = 1 + 3,3 log n (gunakan log ${n} = ${dc(lg,3)}). Tentukan apakah setiap pernyataan berikut <b>Benar</b> atau <b>Salah</b>.`,
+    o:[{t:`Jangkauan data tersebut adalah ${f[0]?J:J+pc([-2,2,3])}.`,ok:f[0]},
+       {t:`Banyak kelas (dibulatkan ke bilangan bulat terdekat) adalah ${f[1]?kk:kk+pc([-1,1])}.`,ok:f[1]},
+       {t:`Panjang kelas interval (dibulatkan) adalah ${f[2]?p:p+pc([1,2])}.`,ok:f[2]}]});}
+  // 5. PG – tepi bawah dan tepi atas
+  {const p=pc([5,7,9,10]),lo=ri(30,60),hi=lo+p-1;
+   S.push({type:"pg",tag:"Tepi Kelas",
+    q:`Pada suatu tabel distribusi frekuensi terdapat kelas interval ${lo} – ${hi}. Tepi bawah dan tepi atas kelas interval tersebut berturut-turut adalah …`,
+    o:[[lo-.5,hi+.5],[lo,hi],[lo-1,hi+1],[lo+.5,hi-.5],[lo-.5,hi]].map((v,i)=>({t:`${dc(v[0],1)} dan ${dc(v[1],1)}`,ok:i==0?1:0}))});}
+  // 6. PG – frekuensi kumulatif kurang dari
+  {const p=pc([5,10]),K=kls(pc([30,35,40,45,50]),p,6),f=Array.from({length:6},()=>ri(2,14)),n=sum(f),m=ri(2,5),cum=i=>sum(f.slice(0,i)),a=cum(m);
+   S.push({type:"pg",tag:"Frekuensi Kumulatif",
+    q:`Perhatikan tabel distribusi frekuensi berikut!${tb(["Nilai","Frekuensi"],rowsK(K,f))}Banyak data yang nilainya kurang dari ${dc(K[m-1][1]+.5,1)} adalah …`,
+    o:pgo(a,[cum(m-1),cum(m+1),f[m-1],n-a],String,2)});}
+  // 7. PG – median data tunggal
+  {const n=pc([9,10,11,12]),v=Array.from({length:n},()=>ri(3,10)),s=[...v].sort((a,b)=>a-b),h=Math.floor(n/2),
+    me=n%2?s[h]:(s[h-1]+s[h])/2,mean=sum(v)/n,cnt={};v.forEach(x=>cnt[x]=(cnt[x]||0)+1);
+   const mo=+Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]||a-b)[0];
+   S.push({type:"pg",tag:"Median Data Tunggal",
+    q:`Diketahui data: ${v.join(", ")}. Median data tersebut adalah …`,
+    o:pgo(me,[mean,s[h-1],s[h+1],mo,v[h]],x=>dc(x),.5)});}
+  // 8. Benar / Salah – mean, median, modus dari tabel frekuensi
+  {const V=[5,6,7,8,9,10];let f;do{f=komp(6,20)}while(f.filter(x=>x==Math.max(...f)).length>1);
+   const e=V.flatMap((v,i)=>Array(f[i]).fill(v)),mean=sum(e)/20,med=(e[9]+e[10])/2,mo=V[f.indexOf(Math.max(...f))],fl=bol3(),
+    wm=mean+pc([.3,.5])*(mean<8?1:-1),wd=med+(med<8?1:-1),wo=pick(V.filter(v=>v!=mo),1)[0];
+   S.push({type:"bs",tag:"Benar / Salah",
+    q:`Nilai ujian suatu mata pelajaran dari 20 siswa disajikan pada tabel berikut.${tbh([["Nilai",...V],["Frekuensi",...f]])}Tentukan apakah setiap pernyataan berikut <b>Benar</b> atau <b>Salah</b>.`,
+    o:[{t:`Rata-rata (mean) nilai tersebut adalah ${dc(fl[0]?mean:wm)}.`,ok:fl[0]},
+       {t:`Median data tersebut adalah ${dc(fl[1]?med:wd)}.`,ok:fl[1]},
+       {t:`Modus data tersebut adalah ${fl[2]?mo:wo}.`,ok:fl[2]}]});}
+  // 9. PG pernyataan – rata-rata gabungan
+  {const C=pc([{a:"siswa putra",b:"siswa putri",t:"tinggi badan",u:" cm",lo:155,hi:176},{a:"siswa kelas XII-A",b:"siswa kelas XII-B",t:"nilai ulangan matematika",u:"",lo:60,hi:90}]);
+   let n1=30,n2=10,P=170,W=166,G=169;
+   for(let t=0;t<800;t++){const a=pc([20,24,30,36,18]),b=pc([10,12,15,8,6]),x=ri(C.lo,C.hi),y=ri(C.lo,C.hi),g=(x*a+y*b)/(a+b);
+     if(Number.isInteger(g)&&x!=y&&g!=x&&g!=y){n1=a;n2=b;P=x;W=y;G=g;break}}
+   S.push(kmb("Rata-rata Gabungan (Pernyataan)",
+    `Dalam suatu kelas terdapat ${n1} ${C.a} dan ${n2} ${C.b}. Rata-rata ${C.t} ${C.a} adalah ${P}${C.u}, rata-rata ${C.t} ${C.b} adalah ${W}${C.u}, dan rata-rata ${C.t} seluruh siswa adalah ${G}${C.u}. Perhatikan pernyataan-pernyataan berikut!`,
+    T=>[`Jumlah ${C.t} seluruh ${C.a} adalah ${T(1)?n1*P:n2*P}${C.u}.`,
+        `Jumlah ${C.t} seluruh siswa adalah ${T(2)?G*(n1+n2):G*(n1+n2)+10}${C.u}.`,
+        `Rata-rata ${C.t} ${C.b} dapat dihitung dengan rumus (${n1+n2} × ${G} − ${n1} × ${P}) ÷ ${n2} = ${T(3)?W:W+pc([-2,2])}${C.u}.`,
+        T(4)?`Rata-rata seluruh siswa (${G}${C.u}) lebih dekat ke rata-rata ${C.a} karena anggotanya lebih banyak.`:`Rata-rata seluruh siswa sama dengan rata-rata biasa kedua kelompok, yaitu ${dc((P+W)/2)}${C.u}.`]))}
+  // 10. PG – mean data berkelompok
+  {const n=pc([20,25,50]),K=kls(pc([30,35,40,45,50,55]),5,5),f=komp(5,n),mid=K.map(c=>(c[0]+c[1])/2),mean=sum(f.map((x,i)=>x*mid[i]))/n;
+   S.push({type:"pg",tag:"Mean Data Berkelompok",
+    q:`Perhatikan tabel distribusi frekuensi berikut!${tb(["Nilai","Frekuensi"],rowsK(K,f))}Rata-rata (mean) data tersebut adalah …`,
+    o:pgo(mean,[mean-2,mean+2,sum(mid)/5,mean+1,mean-1],x=>dc(x),.5)});}
+  // 11. PG – median data berkelompok
+  {const p=pc([5,10]),k=pc([5,6]);let K,f,n,i,F,Tb,r;
+   for(let t=0;t<5000;t++){K=kls(p==5?pc([30,35,40,45,50]):pc([30,40,50]),p,k);f=Array.from({length:k},()=>ri(2,14));n=sum(f);if(n%2)continue;
+     let c=0;i=0;while(c+f[i]<n/2)c+=f[i++];F=c;Tb=K[i][0]-.5;r=(n/2-F)/f[i]*p;if(bersih(r))break}
+   const Me=Tb+r;
+   S.push({type:"pg",tag:"Median Data Berkelompok",
+    q:`Perhatikan tabel distribusi frekuensi berikut!${tb(["Nilai","Frekuensi"],rowsK(K,f))}Median data tersebut adalah …`,
+    o:pgo(Me,[Tb+n/2/f[i]*p,K[i][1]+.5+r,K[i][0]+r,Tb-r,Tb+(n/2-F)/f[i]],x=>dc(x),.5)});}
+  // 12. PG – modus data berkelompok
+  {const p=pc([5,10]),k=pc([5,6]);let K,f,m,b1,b2,r;
+   for(let t=0;t<5000;t++){K=kls(p==5?pc([30,35,40,45,50]):pc([30,40,50]),p,k);f=Array.from({length:k},()=>ri(2,16));
+     const mx=Math.max(...f);m=f.indexOf(mx);if(f.filter(x=>x==mx).length>1||m==0||m==k-1)continue;
+     b1=f[m]-f[m-1];b2=f[m]-f[m+1];r=b1/(b1+b2)*p;if(bersih(r))break}
+   const Tb=K[m][0]-.5,Mo=Tb+r;
+   S.push({type:"pg",tag:"Modus Data Berkelompok",
+    q:`Perhatikan tabel distribusi frekuensi berikut!${tb(["Nilai","Frekuensi"],rowsK(K,f))}Modus data tersebut adalah …`,
+    o:pgo(Mo,[Tb+b2/(b1+b2)*p,K[m][0]+r,Tb+b1/(b1+b2),Tb+p/2,K[m][1]+.5+r],x=>dc(x),.5)});}
+  // 13. PG – angka baku (Z-score): membandingkan dua mata pelajaran
+  {const nm=pc(NM),MP=pc([["Matematika","Bahasa Inggris"],["Fisika","Kimia"],["Biologi","Ekonomi"],["Sejarah","Geografi"]]);
+   const mk=()=>{const sd=pc([4,8,10,12]),z=pc([.5,1,1.5,2,2.5,-.5,-1]),m=ri(40,75);return{m,sd,z,x:m+z*sd}};
+   let d1,d2;
+   for(let t=0;t<800;t++){d1=mk();d2=mk();
+     if(d1.z!=d2.z&&Number.isInteger(d1.x)&&Number.isInteger(d2.x)&&d1.x<=100&&d2.x<=100&&((d1.z>d2.z)==(d1.x<d2.x)))break} // yang angka bakunya lebih besar justru nilai ujiannya lebih rendah
+   const b=d1.z>d2.z?0:1,D=[d1,d2],bt=MP[b],wt=MP[1-b],db=D[b],dw=D[1-b];
+   S.push({type:"pg",fix:0,tag:"Angka Baku (Z-score)",
+    q:`Pada Penilaian Akhir Semester, ${nm} memperoleh nilai ${d1.x} untuk mata pelajaran ${MP[0]}, dengan rata-rata kelas ${d1.m} dan simpangan baku ${d1.sd}. Untuk mata pelajaran ${MP[1]}, ${nm} memperoleh nilai ${d2.x}, dengan rata-rata kelas ${d2.m} dan simpangan baku ${d2.sd}. Berdasarkan angka baku (Z-score), nilai ${nm} dianggap lebih baik pada mata pelajaran …`,
+    o:[{t:`${bt}, karena angka baku ${bt} (Z = ${dc(db.z)}) lebih besar daripada angka baku ${wt} (Z = ${dc(dw.z)}).`,ok:1},
+       {t:`${wt}, karena nilai ujiannya (${dw.x}) lebih tinggi daripada nilai ${bt} (${db.x}).`,ok:0},
+       {t:`${wt}, karena angka baku ${wt} lebih kecil sehingga nilainya lebih baik.`,ok:0},
+       {t:`Sama baik, karena kedua nilai berada di atas rata-rata kelas.`,ok:0}]});}
+  // 14. PG pernyataan – angka baku (Z-score)
+  {const nm=pc(NM);let m,sd,z,x;
+   for(let t=0;t<800;t++){m=ri(60,85);sd=pc([4,5,8,10,12,20,25]);z=pc([-1.5,-1,-.5,-.25,.5,1,1.5,2]);x=m+z*sd;if(Number.isInteger(x)&&x>=20&&x<=100)break}
+   S.push(kmb("Angka Baku (Pernyataan)",
+    `Rata-rata nilai ulangan matematika suatu kelompok siswa adalah ${m} dengan simpangan baku ${sd}. ${nm} memperoleh nilai ${x}. Perhatikan pernyataan-pernyataan berikut!`,
+    T=>[`Angka baku nilai ${nm} adalah ${T(1)?dc(z):dc(-z)}.`,
+        `Nilai ${nm} berada ${(x>m)==T(2)?"di atas":"di bawah"} rata-rata kelompok.`,
+        `Selisih nilai ${nm} dengan rata-rata kelompok adalah ${T(3)?Math.abs(x-m):Math.abs(x-m)+sd}.`,
+        `Siswa lain yang bernilai ${m+2*sd} memiliki angka baku ${T(4)?2:pc([1,3])}.`]))}
+  // 15. PG – koefisien variasi (KV)
+  {const IT=pc([["lampu neon","lampu pijar","dapat menyala"],["TV merk A","TV merk B","mampu menyala"],["baterai merk P","baterai merk Q","dapat bertahan"]]);
+   let mb,mw,kb,kw,sb,sw;
+   for(let t=0;t<800;t++){mb=pc([1250,1500,1750,2000,2250,2500,2800]);mw=mb+pc([250,500,750,1000]);kb=pc([8,10,12,15,16,20,24,25]);kw=kb+pc([5,8,10,12]);
+     sb=mb*kb/100;sw=mw*kw/100;if(Number.isInteger(sb)&&Number.isInteger(sw))break}
+   const bw=R()<.5,d0=bw?{m:mb,s:sb}:{m:mw,s:sw},d1=bw?{m:mw,s:sw}:{m:mb,s:sb},bt=bw?IT[0]:IT[1],wt=bw?IT[1]:IT[0];
+   S.push({type:"pg",fix:0,tag:"Koefisien Variasi",
+    q:`${cap(IT[0])} secara rata-rata ${IT[2]} selama ${rp(d0.m)} jam dengan simpangan baku ${rp(d0.s)} jam, sedangkan ${IT[1]} secara rata-rata ${IT[2]} selama ${rp(d1.m)} jam dengan simpangan baku ${rp(d1.s)} jam. Berdasarkan koefisien variasi (KV), yang memiliki kualitas lebih baik adalah …`,
+    o:[{t:`${cap(bt)}, karena KV-nya (${dc(kb)}%) lebih kecil daripada KV ${wt} (${dc(kw)}%).`,ok:1},
+       {t:`${cap(wt)}, karena KV-nya (${dc(kw)}%) lebih besar daripada KV ${bt} (${dc(kb)}%).`,ok:0},
+       {t:`${cap(wt)}, karena rata-rata pemakaiannya lebih besar (${rp(mw)} jam).`,ok:0},
+       {t:`Keduanya sama baik, karena simpangan baku keduanya bernilai positif.`,ok:0}]});}
+  return S.map((s,i)=>({...s,id:"S"+(i+1)}));
+}
+function pgo(c,d,f=num,st){ // c = jawaban benar, d = calon pengecoh, f = format tampilan, st = langkah pengisi bila pengecoh kurang
+  st=st||Math.max(1,Math.round(Math.abs(c)*.07));
+  const seen=new Set([f(c)]),u=[];
+  const add=v=>{if(u.length>=4||!(v>0))return;const s=f(v);if(!seen.has(s)){seen.add(s);u.push(v)}};
+  d.forEach(add);
+  for(let j=1;u.length<4&&j<60;j++){add(c+j*st);add(c-j*st)}
+  return [c,...u].map((v,i)=>({t:f(v),ok:i==0?1:0}));
+}
+
+/* ================= UTILITAS ================= */
+const $=s=>document.querySelector(s), app=$("#app");
+function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuf(a,r){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const KEY="ujian_statistika_v1";
+let st=null, qs=[], timerId=null, lastV=0, done=false, grace=0;
+const mv=()=>(st&&st.mv)||MAXV;
+const tanya=m=>{const r=confirm(m);grace=Date.now()+2500;return r}; // dialog bawaan browser membuat layar 'blur' sesaat, bukan pelanggaran
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
+
+/* ================= ANTI-CONTEKAN ================= */
+["contextmenu","copy","cut","paste","dragstart","selectstart"].forEach(ev=>document.addEventListener(ev,e=>{if(!e.target.closest("input"))e.preventDefault()}));
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&["c","v","x","u","s","p","a"].includes(e.key.toLowerCase())||e.key=="F12"||e.key=="PrintScreen")e.preventDefault()});
+window.addEventListener("beforeunload",e=>{if(st&&!done){e.preventDefault();e.returnValue=""}});
+function fs(){const d=document.documentElement;try{(d.requestFullscreen||d.webkitRequestFullscreen||function(){}).call(d)}catch(e){}}
+function inFs(){return !!(document.fullscreenElement||document.webkitFullscreenElement)}
+function violation(why){
+  if(!st||done||Date.now()<grace||Date.now()-lastV<1500)return; lastV=Date.now();
+  st.v++; st.log.push(new Date().toLocaleTimeString("id-ID")+" "+why); save();
+  if(st.v>=mv()){submit("Otomatis (pelanggaran)");return}
+  $("#ovm").innerHTML=`${why}.<br>Pelanggaran <b>${st.v} dari ${mv()}</b>. Jika mencapai batas, jawaban dikirim otomatis dan ujian berakhir.`;
+  $("#ov").style.display="flex"; renderBar();
+}
+$("#ovb").onclick=()=>{$("#ov").style.display="none";grace=Date.now()+2500;fs()};
+let wl=null,hiddenAt=0,hidIdx=-1;
+async function jagaLayar(){ // cegah layar mati otomatis (siswa menghitung di kertas)
+  try{if(st&&!done&&"wakeLock" in navigator&&!document.hidden&&!wl){wl=await navigator.wakeLock.request("screen");wl.addEventListener("release",()=>{wl=null})}}catch(e){wl=null}}
+function lepasLayar(){try{if(wl)wl.release()}catch(e){}wl=null}
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden){hiddenAt=Date.now();hidIdx=-1;const n=st?st.log.length:0;violation("Keluar dari halaman / pindah tab / aplikasi, atau layar mati");if(st&&st.log.length>n)hidIdx=st.log.length-1}
+  else{if(st&&!done&&hidIdx>=0&&st.log[hidIdx]){const d=Math.round((Date.now()-hiddenAt)/1000);st.log[hidIdx]+=` (selama ${d>=60?Math.floor(d/60)+" mnt "+d%60+" dtk":d+" dtk"})`;save();hidIdx=-1}jagaLayar()}});
+window.addEventListener("blur",()=>{if(!document.hidden)setTimeout(()=>{if(!document.hasFocus())violation("Layar kehilangan fokus")},300)});
+["fullscreenchange","webkitfullscreenchange"].forEach(ev=>document.addEventListener(ev,()=>{if(!inFs())violation("Keluar dari mode layar penuh")}));
+
+/* ================= TAMPILAN ================= */
+function gambar(){
+  // batang = histogram · garis = poligon frekuensi · koin = rata-rata (x̄)
+  const H=[20,38,60,88,70,46,24],pts=H.map((hh,i)=>[38+i*40,128-hh]);
+  const bar=H.map((hh,i)=>`<rect class="bar" x="${20+i*40}" y="${128-hh}" width="36" height="${hh}" rx="3" fill="url(#gb)" style="animation-delay:${0.6+i*0.13}s"/>`).join("");
+  const dot=pts.map(([x,y],i)=>`<circle class="dot" cx="${x}" cy="${y}" r="4.5" fill="#fff" stroke="#ffd166" stroke-width="2" style="animation-delay:${1.5+i*0.3}s"/>`).join("");
+  return `<svg class="gbr" viewBox="0 0 330 168" role="img" aria-label="Histogram dan poligon frekuensi">
+   <defs><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity=".35"/></linearGradient>
+   <filter id="gl"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+   <line x1="8" y1="130" x2="322" y2="130" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/>
+   ${bar}
+   <path class="kurva" pathLength="1" d="M${pts.map(p=>p.join(",")).join(" L")}" fill="none" stroke="#ffd166" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#gl)"/>
+   ${dot}
+   <g class="koin"><circle cx="304" cy="14" r="13" fill="#ffd166" stroke="#fff" stroke-width="2"/><text x="304" y="19.5" text-anchor="middle" font-size="15" font-weight="700" fill="#8a5a00" font-family="Georgia,serif">x̄</text></g>
+   <text class="tx" x="14" y="150" font-size="11.5" fill="#fff" fill-opacity=".9" font-family="Georgia,serif" font-style="italic">x̄ , Me , Mo</text>
+   <text class="tx" x="172" y="150" font-size="11.5" fill="#ffe08a" font-family="Georgia,serif" font-style="italic">Z = (x − x̄) / S</text>
+   <text class="tx" x="14" y="164" font-size="10" fill="#fff" fill-opacity=".7" font-family="system-ui,sans-serif" letter-spacing=".08em">PEMUSATAN DATA</text>
+   <text class="tx" x="172" y="164" font-size="10" fill="#ffe08a" fill-opacity=".85" font-family="system-ui,sans-serif" letter-spacing=".08em">PENYEBARAN DATA</text>
+  </svg>`;
+}
+function depan(msg){
+  const sim=["Σ","x̄","Me","Mo","S","Z","KV","%","f","n","Q","p","μ","σ"];
+  app.innerHTML=`<div class="hero"><div id="fl"></div><div class="wrap hc"><div class="card cover">
+    <div class="lbl">ULANGAN HARIAN</div>
+    <h1>${CONFIG.JUDUL}</h1>
+    <div class="sub">Kelas XII · ${CONFIG.SEKOLAH}</div>
+    <div class="guru">Guru: ${CONFIG.GURU}</div>
+    ${gambar()}
+    <div class="info"><span>📝 15 soal</span><span id="chd">⏱ ${DUR} menit</span><span>🔁 ${CONFIG.KESEMPATAN} kesempatan · nilai terbesar diambil</span></div>
+    <ul class="rules"><li>Ujian berjalan dalam <b>layar penuh</b>.</li>
+    <li>Dilarang pindah tab/aplikasi, membuka aplikasi lain, atau menyalin soal.</li>
+    <li>Setiap pelanggaran dicatat dan dilihat guru. Batas <b><span id="mvt">${MAXV}</span> kali</b>, setelah itu jawaban otomatis dikirim.</li>
+    <li>Layar HP dijaga <b>tetap menyala</b> selama ujian. Jangan menekan tombol power. Saat menghitung di kertas, biarkan HP terbuka di halaman soal.</li></ul>
+    <div class="err" style="color:#ffd0d0">${msg||""}</div>
+    <div class="lock" id="stat"></div>
+    <button class="btn-mulai" id="mulai0" disabled>Memeriksa…</button></div></div></div>`;
+  const f=$("#fl");for(let i=0;i<16;i++){const s=document.createElement("span");s.textContent=sim[i%sim.length];
+    s.style.cssText=`left:${Math.random()*95}%;font-size:${22+Math.random()*44}px;animation-duration:${9+Math.random()*10}s;animation-delay:${-Math.random()*14}s`;f.appendChild(s)}
+  $("#mulai0").onclick=()=>{clearInterval(pollId);if($("#mulai0").dataset.lanjut)lanjut();else login(msg)};
+  clearInterval(pollId);cekStatus();pollId=setInterval(cekStatus,10000);
+}
+let DUR=CONFIG.DURASI_MENIT,MAXV=CONFIG.MAKS_PELANGGARAN,pollId=null;
+function tersisa(){try{const o=JSON.parse(localStorage.getItem(KEY));return o&&!o.done?o:null}catch(e){return null}}
+function lanjut(){const o=tersisa();if(!o)return;st=o;st.v++;st.log.push("Memuat ulang halaman");save();grace=Date.now()+4000;fs();mulai()}
+async function cekStatus(){ // izin guru + jadwal dibaca dari sheet "Pengaturan"; dicek ulang tiap 10 detik
+  const b=$("#mulai0"),s=$("#stat");if(!b||!s)return;
+  try{const J=await(await fetch(CONFIG.SCRIPT_URL+"?aksi=status&t="+Date.now())).json();
+    if(J.durasi>0){DUR=J.durasi;const c=$("#chd");if(c)c.textContent=`⏱ ${DUR} menit`}
+    if(J.batas>0){MAXV=J.batas;const m=$("#mvt");if(m)m.textContent=MAXV}
+    if(J.buka){s.style.display="none";b.disabled=false;b.dataset.lanjut="";b.textContent=tersisa()?"Lanjutkan Ujian ▶":"Mulai ▶";if(tersisa())b.dataset.lanjut="1"}
+    else if(tersisa()){s.style.display="block";s.textContent="🔒 "+(J.pesan||"Ujian ditutup.")+" Kamu masih punya ujian yang belum selesai.";b.disabled=false;b.dataset.lanjut="1";b.textContent="Lanjutkan Ujian ▶"}
+    else{s.style.display="block";s.textContent="🔒 "+(J.pesan||"Ujian belum dibuka.");b.disabled=true;b.dataset.lanjut="";b.textContent="Menunggu izin guru…"}
+  }catch(e){s.style.display="block";s.textContent="⚠ Tidak dapat terhubung ke server. Periksa koneksi internet.";b.disabled=true;b.textContent="Mulai ▶"}
+}
+async function login(msg){
+  app.innerHTML=`<div class="wrap"><div class="card"><h1>${CONFIG.JUDUL}</h1><p class="mu">Memuat daftar siswa…</p></div></div>`;
+  clearInterval(pollId);let D,MK=3,bk="";
+  try{const r=await fetch(CONFIG.SCRIPT_URL+"?aksi=daftar");const J=await r.json();if(J.buka===false){bk=J.pesan||"Ujian belum dibuka."}else{D=J.kelas;MK=J.maks||3;if(J.durasi>0)DUR=J.durasi;if(J.batas>0)MAXV=J.batas;if(!D||!Object.keys(D).length)throw 0}}
+  catch(e){app.innerHTML=`<div class="wrap"><div class="card"><h1>Daftar siswa gagal dimuat</h1><p class="mu">Periksa koneksi internet. Jika terus gagal, hubungi guru (sheet "Siswa" mungkin masih kosong).</p><button id="rt">Coba Lagi</button></div></div>`;$("#rt").onclick=()=>login(msg);return}
+  if(bk){depan(bk);return}
+  const kls=Object.keys(D);
+  app.innerHTML=`<div class="wrap"><div class="card"><button class="back" id="bk">‹ Kembali</button><h1>Isi Identitas</h1><div class="mu">${CONFIG.JUDUL} · ${CONFIG.SEKOLAH}</div>
+  <label>Kelas</label><select id="kl"><option value="">— pilih kelas —</option>${kls.map(k=>`<option>${esc(k)}</option>`).join("")}</select>
+  <label>Nama</label><select id="nm" disabled><option value="">— pilih kelas dulu —</option></select>
+  <div class="mu" id="inf"></div><div class="err" id="er">${msg||""}</div><br><button id="go">Mulai Ujian</button></div></div>`;
+  $("#bk").onclick=()=>depan(msg);
+  $("#kl").onchange=()=>{const k=$("#kl").value,n=$("#nm");
+    n.disabled=!k;n.innerHTML=k?`<option value="">— pilih nama —</option>`+D[k].map((x,i)=>`<option value="${i}"${x.c>=MK?" disabled":""}>${esc(x.n)}${x.c>=MK?" (percobaan habis)":x.c?` (sudah ${x.c}x)`:""}</option>`).join(""):`<option value="">— pilih kelas dulu —</option>`};
+  $("#nm").onchange=()=>{const v=$("#nm").value,k=$("#kl").value;$("#inf").textContent=v===""?"":`Percobaan ke-${D[k][+v].c+1} dari ${MK}. Nilai yang diambil adalah nilai TERBESAR dari semua percobaan.`};
+  $("#go").onclick=()=>{
+    const kl=$("#kl").value,ix=$("#nm").value;
+    if(!kl||ix==="")return $("#er").textContent="Pilih kelas dan nama kamu.";
+    const nm=D[kl][+ix].n,ab=+ix+1,c0=D[kl][+ix].c;
+    if(!tanya(`Kamu memilih:\n${nm}\nKelas ${kl}\n\nSudah benar?`))return;
+    const id=(nm+"|"+kl+"|"+ab).toLowerCase(); let old=null;
+    try{old=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+    if(old&&old.id==id&&!old.done){st=old;st.v++;st.log.push("Memuat ulang halaman")}
+    else{if(old&&!old.done&&old.id!=id)return $("#er").textContent="Ada ujian lain yang belum selesai di perangkat ini.";
+      st={id,nm,kl,ab,att:c0+1,mk:MK,dur:DUR,mv:MAXV,cur:0,seed:Math.floor(Math.random()*1e9),start:Date.now(),ans:{},v:0,log:[],done:false}}
+    save();grace=Date.now()+4000;fs();mulai();
+  };
+}
+function mulai(){
+  const r=rng(st.seed+7);
+  qs=shuf(buatSoal(st.seed),r).map(q=>q.o&&!q.fix?{...q,o:shuf(q.o,r)}:q);
+  app.innerHTML=`<div class="bar"><span id="b1"></span><span id="b2"></span></div><div class="wrap">${"wakeLock" in navigator?"":`<div class="note" id="wlnote">Penjaga layar tidak didukung di HP ini. Atur <b>Waktu layar (Screen timeout)</b> ke paling lama, dan sentuh layar sesekali saat menghitung.</div>`}<div class="chips" id="chips"></div><div id="soal"></div><div class="navb"><button class="sec" id="prev">‹ Sebelumnya</button><button id="next">Selanjutnya ›</button></div></div>`;
+  $("#soal").innerHTML=qs.map((q,i)=>`<div class="card q" style="display:none"><b>Soal ${i+1} dari ${qs.length}</b><span class="tag">${q.tag}</span><div style="margin:12px 0">${q.q}</div>${isi(q)}</div>`).join("");
+  $("#chips").innerHTML=qs.map((q,i)=>`<button class="chip" data-c="${i}">${i+1}</button>`).join("");
+  document.querySelectorAll("[data-q]").forEach(el=>el.addEventListener("input",()=>{ambil();chips()}));
+  document.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>tampil(+b.dataset.c));
+  $("#prev").onclick=()=>tampil(st.cur-1);
+  $("#next").onclick=()=>{if(st.cur<qs.length-1)tampil(st.cur+1);else{
+    const k=qs.filter(q=>!jawab(q)).length;
+    if(tanya(k?`Masih ada ${k} soal belum dijawab. Tetap kirim sekarang?`:"Semua soal sudah dijawab. Kirim jawaban sekarang?"))submit("Selesai")}};
+  pulih();tampil(Math.min(st.cur||0,qs.length-1));renderBar();jagaLayar();
+  timerId=setInterval(renderBar,1000);
+}
+function jawab(q){const a=st.ans[q.id];if(a===undefined)return false;if(q.type=="pk")return a.length>0;if(q.type=="bs")return Object.keys(a).length>0;return true}
+function chips(){document.querySelectorAll("[data-c]").forEach((b,i)=>{b.classList.toggle("ok",jawab(qs[i]));b.classList.toggle("on",i==st.cur)})}
+function tampil(i){
+  if(i<0||i>=qs.length)return;st.cur=i;save();
+  document.querySelectorAll(".q").forEach((c,j)=>c.style.display=j==i?"block":"none");
+  $("#prev").style.visibility=i==0?"hidden":"visible";
+  $("#next").textContent=i==qs.length-1?"Kirim Jawaban ✓":"Selanjutnya ›";
+  chips();window.scrollTo(0,0);
+}
+function isi(q){
+  if(q.type=="pg")return q.o.map((o,j)=>`<label class="opt"><input type="radio" name="${q.id}" data-q="${q.id}" value="${j}"><span>${esc(o.t)}</span></label>`).join("");
+  if(q.type=="pk")return q.o.map((o,j)=>`<label class="opt"><input type="checkbox" data-q="${q.id}" value="${j}"><span>${esc(o.t)}</span></label>`).join("");
+  if(q.type=="bs")return `<table><tr><th>Pernyataan</th><th>Benar</th><th>Salah</th></tr>`+q.o.map((o,j)=>`<tr><td>${esc(o.t)}</td><td class="c"><input type="radio" name="${q.id}_${j}" data-q="${q.id}" data-j="${j}" value="1"></td><td class="c"><input type="radio" name="${q.id}_${j}" data-q="${q.id}" data-j="${j}" value="0"></td></tr>`).join("")+`</table>`;
+  return `<input type="number" inputmode="decimal" data-q="${q.id}" placeholder="Tulis jawaban (angka)">`;
+}
+function ambil(){
+  qs.forEach(q=>{
+    const els=[...document.querySelectorAll(`[data-q="${q.id}"]`)];
+    if(q.type=="pg"){const c=els.find(e=>e.checked);if(c)st.ans[q.id]=+c.value}
+    else if(q.type=="pk")st.ans[q.id]=els.filter(e=>e.checked).map(e=>+e.value);
+    else if(q.type=="bs"){const m={};els.filter(e=>e.checked).forEach(e=>m[e.dataset.j]=+e.value);st.ans[q.id]=m}
+    else if(els[0].value!=="")st.ans[q.id]=parseFloat(els[0].value);
+    else delete st.ans[q.id];
+  });save();
+}
+function pulih(){
+  qs.forEach(q=>{const a=st.ans[q.id];if(a===undefined)return;
+    const els=[...document.querySelectorAll(`[data-q="${q.id}"]`)];
+    if(q.type=="pg")els.forEach(e=>e.checked=+e.value===a);
+    else if(q.type=="pk")els.forEach(e=>e.checked=a.includes(+e.value));
+    else if(q.type=="bs")els.forEach(e=>e.checked=a[e.dataset.j]!==undefined&&a[e.dataset.j]==+e.value);
+    else els[0].value=a});
+}
+function sisa(){return Math.max(0,(st.dur||CONFIG.DURASI_MENIT)*60-Math.floor((Date.now()-st.start)/1000))}
+function renderBar(){
+  if(!$("#b1"))return;const s=sisa();
+  $("#b1").textContent=`${st.nm} · Percobaan ${st.att||1}`;
+  $("#b2").textContent=`⏱ ${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")} · ⚠ ${st.v}/${mv()}${wl?" · 🔆":""}`;
+  if(s<=0&&!done)submit("Otomatis (waktu habis)");
+}
+
+/* ================= PENILAIAN & PENGIRIMAN ================= */
+function nilai(){
+  let benar=0;const det=[];
+  qs.forEach(q=>{const a=st.ans[q.id];let sk=0;
+    if(a!==undefined){
+      if(q.type=="pg")sk=q.o[a]&&q.o[a].ok?1:0;
+      else if(q.type=="pk"){const k=q.o.map((o,j)=>o.ok?j:-1).filter(j=>j>=0);sk=(k.length==a.length&&k.every(j=>a.includes(j)))?1:0}
+      else if(q.type=="bs")sk=q.o.filter((o,j)=>a[j]!==undefined&&a[j]==o.ok).length/q.o.length;
+      else sk=Math.abs(a-q.ans)<=(q.tol||1e-6)?1:0}
+    benar+=sk;det.push(q.id+":"+(a===undefined?"-":JSON.stringify(a))+"="+(+sk.toFixed(2)))});
+  return{benar:+benar.toFixed(2),det};
+}
+async function cek(){try{const J=await(await fetch(CONFIG.SCRIPT_URL+"?aksi=daftar&t="+Date.now())).json();const x=J.kelas[st.kl][st.ab-1];return !!x&&x.c>=st.att}catch(e){return false}}
+async function submit(status){
+  if(done)return;done=true;clearInterval(timerId);lepasLayar();ambil&&qs.length&&ambil();
+  $("#ov").style.display="none";
+  try{if(inFs())(document.exitFullscreen||document.webkitExitFullscreen).call(document)}catch(e){}
+  const h=nilai(),total=qs.length;
+  const data={nama:st.nm,kelas:st.kl,absen:st.ab,paket:st.seed.toString(36),skor:+(h.benar/total*100).toFixed(1),benar:h.benar,total,
+    sesi:"S"+st.seed,pelanggaran:st.v,logPelanggaran:st.log.join(" | "),durasiMenit:+((Date.now()-st.start)/60000).toFixed(1),status,detail:h.det.join(" ; ")};
+  app.innerHTML=`<div class="wrap"><div class="card"><h1>Mengirim jawaban…</h1><p class="mu">Jangan tutup halaman ini.</p></div></div>`;
+  let ok=false,res=null;
+  for(let i=0;i<3&&!ok;i++){
+    try{const r=await fetch(CONFIG.SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});
+      const j=await r.json();res=j;ok=j.ok;if(j.batas)break}catch(e){
+      try{await fetch(CONFIG.SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(data)});await new Promise(r=>setTimeout(r,2500));ok=await cek()}catch(e2){await new Promise(r=>setTimeout(r,1500))}}
+  }
+  const fm=x=>String(+(+x).toFixed(1)).replace(".",",");
+  const balik=()=>{clearInterval(t);st=null;qs=[];done=false;lastV=0;depan()};let t,c=20;
+  if(res&&res.batas){st.done=true;save();app.innerHTML=`<div class="wrap"><div class="card"><h1>Batas percobaan habis</h1><p>Kamu sudah memakai semua kesempatan mengerjakan. Nilai terbesarmu yang diambil guru.</p><button id="kb">Kembali</button></div></div>`;$("#kb").onclick=()=>{st=null;qs=[];done=false;depan()};return}
+  if(ok){st.done=true;save();const nm=st.nm,mk=(res&&res.maks)||st.mk||3,pc=(res&&res.percobaan)||st.att||1,tb=res&&res.terbaik!=null?res.terbaik:null,sisa=Math.max(0,mk-pc);
+    app.innerHTML=`<div class="wrap"><div class="card" style="text-align:center"><h1>✅ Jawaban terkirim</h1><p>Terima kasih, ${esc(nm)}.</p>
+    <div class="mu">Nilai percobaan ke-${pc}</div><div style="font-size:3rem;font-weight:700;color:var(--pr);line-height:1.1">${fm(data.skor)}</div>
+    <p class="mu">Benar ${fm(data.benar)} dari ${data.total} soal</p>
+    <p>${tb!==null?`Nilai terbaikmu saat ini: <b>${fm(tb)}</b><br>`:""}<span class="mu">${sisa?`Kamu masih punya ${sisa} kesempatan lagi. Nilai yang diambil adalah nilai terbesar.`:"Kesempatan mengerjakan sudah habis. Nilai terbesar yang diambil."}</span></p>
+    <p class="mu">Kembali ke halaman awal dalam <b id="cd">${c}</b> detik…</p><button class="sec" id="kb">Kembali Sekarang</button></div></div>`;
+    t=setInterval(()=>{c--;if(c<=0)balik();else $("#cd").textContent=c},1000);
+    $("#kb").onclick=balik}
+  else{done=false;app.innerHTML=`<div class="wrap"><div class="card"><h1>Gagal mengirim</h1><p>Periksa koneksi internet, lalu tekan tombol di bawah. Jawabanmu tersimpan.</p><button id="rt">Kirim Ulang</button></div></div>`;$("#rt").onclick=()=>submit(status)}
+}
+
+/* ================= MULAI ================= */
+(function(){
+  let old=null;try{old=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+    depan(old&&!old.done?"Ada ujian yang belum selesai. Pilih kelas dan nama yang sama untuk melanjutkan (dihitung 1 pelanggaran).":"");
+})();
+</script>
+</body>
+</html>
